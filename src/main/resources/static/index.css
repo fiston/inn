@@ -1,0 +1,16 @@
+.navbar {
+    margin-bottom: 32px;
+}
+
+.input-group {
+    margin-bottom: 16px;
+}
+
+.card {
+    max-width: 50%;
+    margin: 128px auto;
+}
+
+.card-header {
+    font-size: 1.5em;
+}
