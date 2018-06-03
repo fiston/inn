@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -13,11 +14,13 @@ public class Person {
     @GeneratedValue
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(unique = true)
+    @NotBlank
     @Getter @Setter
     private String username;
 
-    @Column(nullable = false)
+    @Column
+    @NotBlank
     @Getter @Setter
     private String password;
 

@@ -5,19 +5,25 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 public class Customer extends Person {
 
-    @Column(nullable = false)
+    @Column
+    @NotBlank
     @Getter @Setter
     private String realName;
 
-    @Column(nullable = false)
+    @Column
+    @Size(min = 18, max = 18)
     @Getter @Setter
     private String identityNumber;
 
-    @Column(nullable = false)
+    @Column
+    @Size(min = 1, max = 1)
     @Getter @Setter
     private String gender;
 
@@ -26,6 +32,7 @@ public class Customer extends Person {
     private String phoneNumber;
 
     @Column
+    @Email
     @Getter @Setter
     private String emailAddress;
 

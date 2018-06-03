@@ -7,30 +7,30 @@
         <div class="card">
             <div class="card-header text-white bg-primary">注册</div>
             <div class="card-body">
-                <form th:action="@{/register}" th:object="${user}" method="post">
+                <form th:action="@{/register}" th:object="${user}" method="post" class="needs-validation">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">用户名　</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{username}">
+                        <input type="text" class="form-control" th:field="*{username}" required>
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">密码　　</span>
                         </div>
-                        <input type="password" class="form-control" th:field="*{password}">
+                        <input type="password" class="form-control" th:field="*{password}" required>
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">真实姓名</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{realName}">
+                        <input type="text" class="form-control" th:field="*{realName}" required>
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">身份证号</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{identityNumber}">
+                        <input type="text" class="form-control" th:field="*{identityNumber}" required minlength="18" maxlength="18">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
