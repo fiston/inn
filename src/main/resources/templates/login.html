@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+    <div th:replace="fragments :: nav"></div>
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-white bg-primary">登录</div>
+            <div class="card-body">
+                <form th:action="@{/login}" method="post">
+                    <div class="input-group">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">用户名</span>
+                            </div>
+                            <input type="text" class="form-control" name="username">
+                        </div>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">密　码</span>
+                            </div>
+                            <input type="password" class="form-control" name="password">
+                        </div>
+                        <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </form>
+                <a th:href="@{/register}" class="btn btn-info float-right">注册新账号</a>
+                <span class="register-prompt">还没有注册？</span>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments :: footer"></div>
+</body>
+</html>

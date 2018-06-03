@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments :: head"></head>
 <body>
-    <nav th:replace="fragments :: nav"></nav>
+    <div th:replace="fragments :: nav"></div>
     <div class="container">
         <div class="card">
             <div class="card-header text-white bg-primary">注册</div>
@@ -58,5 +58,6 @@
             </div>
         </div>
     </div>
+    <div th:replace="fragments :: footer"></div>
 </body>
 </html>
