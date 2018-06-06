@@ -12,7 +12,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">用户名　</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{username}" required>
+                        <input type="text" class="form-control" th:field="*{username}" required pattern="\w+">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">

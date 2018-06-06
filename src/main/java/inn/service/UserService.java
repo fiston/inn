@@ -8,6 +8,8 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
 
@@ -26,14 +28,18 @@ public class UserService {
         return new Staff();
     }
 
-    public boolean existsByUsername(String username) {
-        return personRepository.findFirstByUsername(username) != null;
+    public Optional<Person> findById(Integer id) {
+        return personRepository.findById(id);
     }
 
-    public Person authenticate(String username, String password) {
-        val user = personRepository.findFirstByUsername(username);
-        if (user == null || !password.equals(user.getPassword())) {
-            return null;
+    public boolean existsByUsername(String username) {
+        return personRepository.findByUsername(username).isPresent();
+    }
+
+    public Optional<Person> authenticate(String username, String password) {
+        val user = personRepository.findByUsername(username);
+        if (user.isPresent() && !password.equals(user.get().getPassword())) {
+            return Optional.empty();
         }
         return user;
     }

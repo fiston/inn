@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -12,10 +13,11 @@ public class Person {
 
     @Id
     @GeneratedValue
+    @Getter
     private Integer id;
 
     @Column(unique = true)
-    @NotBlank
+    @Pattern(regexp = "\\w+")
     @Getter @Setter
     private String username;
 

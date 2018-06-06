@@ -39,7 +39,7 @@ public class RegisterController {
     public String createUser(Model model, RedirectAttributes redirectAttributes,
                              @Valid @ModelAttribute("user") Customer user, BindingResult result) {
         if (result.hasErrors()) {
-            val message = new StringBuffer();
+            val message = new StringBuilder();
             for (FieldError error : result.getFieldErrors()) {
                 message.append(error.getField());
                 message.append("：");
