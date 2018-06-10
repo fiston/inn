@@ -28,6 +28,8 @@ public class Customer extends Person {
     private String gender;
 
     @Column
+    @NotBlank
+    @Size(min = 4)
     @Getter @Setter
     private String phoneNumber;
 
