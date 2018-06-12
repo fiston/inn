@@ -3,7 +3,6 @@
 }
 
 .card {
-    max-width: 512px;
     margin: 64px auto;
 }
 
@@ -11,9 +10,23 @@
     font-size: 1.5em;
 }
 
+.user-form {
+    max-width: 512px;
+}
+
 .register-prompt {
     float: right;
     padding-top: 8px;
+}
+
+.avatar {
+    border-radius: 50%;
+    display: block;
+    margin: 32px auto;
+}
+
+.user-info-row {
+    margin: 16px auto;
 }
 
 .footer {
