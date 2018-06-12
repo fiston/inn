@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -15,11 +16,13 @@ public class Customer extends Person {
     @Column
     @NotBlank
     @Getter @Setter
+    @Pattern(regexp = "[\\u4E00-\\u9FA5a-zA-Z+]{1,15}")//Chinese
     private String realName;
 
     @Column
-    @Size(min = 18, max = 18)
+    //@Size(min = 18, max = 18)
     @Getter @Setter
+    @Pattern(regexp = "[0-9+]{18}")
     private String identityNumber;
 
     @Column
@@ -29,7 +32,7 @@ public class Customer extends Person {
 
     @Column
     @NotBlank
-    @Size(min = 4)
+    @Size(min = 4, max = 15)
     @Getter @Setter
     private String phoneNumber;
 
