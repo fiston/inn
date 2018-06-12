@@ -37,12 +37,12 @@
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="logout.html" data-method="delete">登出</a>
+                        <a class="nav-link" href="index.html" data-method="delete">登出</a>
                     </li>
                 </ul>
             </div>
         </nav>
-        <div th:if="${message} != null" th:text="${message}" th:class="|alert alert-${alertClass}|"></div>
+        <div th:if="${#messages} != null" th:text="${#messages}" th:class="|alert alert-primary|"></div>
     </div>
 
     <div class="container">
