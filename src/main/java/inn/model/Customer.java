@@ -5,9 +5,11 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Entity
 public class Customer extends Person {
@@ -35,5 +37,9 @@ public class Customer extends Person {
     @Email
     @Getter @Setter
     private String emailAddress;
+
+    @OneToMany
+    @Getter
+    private List<Reservation> reservations;
 
 }

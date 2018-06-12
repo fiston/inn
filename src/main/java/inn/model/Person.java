@@ -11,8 +11,7 @@ import javax.validation.constraints.Pattern;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Getter
     private Integer id;
 
