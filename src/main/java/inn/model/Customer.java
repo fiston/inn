@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class Customer extends Person {
     private String realName;
 
     @Column
-    @Size(min = 18, max = 18)
+    @Pattern(regexp = "\\d{17}[0-9Xx]")
     @Getter @Setter
     private String identityNumber;
 

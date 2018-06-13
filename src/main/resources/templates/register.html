@@ -30,7 +30,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">身份证号</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{identityNumber}" required minlength="18" maxlength="18">
+                        <input type="text" class="form-control" th:field="*{identityNumber}" required pattern="\d{17}[0-9Xx]">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
