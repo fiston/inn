@@ -12,25 +12,25 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text">用户名　</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{username}" required pattern="[0-9a-zA-Z_+]{4,10}">
+                        <input type="text" class="form-control" th:field="*{username}" required pattern="[0-9a-zA-Z_]{4,10}+">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">密码　　</span>
                         </div>
-                        <input type="password" class="form-control" th:field="*{password}" required pattern="[0-9a-zA-Z_+]{4,20}">
+                        <input type="password" class="form-control" th:field="*{password}" required pattern="[0-9a-zA-Z_]{4,20}+">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">真实姓名</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{realName}" required pattern="[a-zA-Z\u4E00-\u9FA5+]{1,15}">
+                        <input type="text" class="form-control" th:field="*{realName}" required pattern="[a-zA-Z\u4E00-\u9FA5]{1,15}+">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">身份证号</span>
                         </div>
-                        <input type="text" class="form-control" th:field="*{identityNumber}" required pattern="[0-9+]{18}">
+                        <input type="text" class="form-control" th:field="*{identityNumber}" required pattern="[0-9]{18}+">
                     </div>
                     <div class="input-group">
                         <div class="input-group-prepend">

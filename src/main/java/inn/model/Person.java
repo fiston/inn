@@ -18,14 +18,14 @@ public class Person {
 
     @Column(unique = true)
     //@Pattern(regexp = "\\w+")
-    @Pattern(regexp = "[0-9a-zA-Z_+]{4,10}")
+    @Pattern(regexp = "[0-9a-zA-Z_]{4,10}+")
     @Getter @Setter
     private String username;
 
     @Column
     @NotBlank
     @Getter @Setter
-    @Pattern(regexp = "[0-9a-zA-Z_+]{4,20}")
+    @Pattern(regexp = "[0-9a-zA-Z_]{4,20}+")
     private String password;
 
 }
