@@ -10,12 +10,13 @@ import javax.validation.constraints.NotBlank;
 @Entity
 public class Staff extends Person {
 
-    @Column
+    @Column(unique = true)
     @NotBlank
     @Getter @Setter
     private String staffNumber;
 
     @Column
+    @NotBlank
     @Getter @Setter
     private Boolean isAdmin;
 

@@ -12,7 +12,7 @@ public class Room {
     @Getter
     private Integer id;
 
-    @Column
+    @Column(unique = true)
     @Getter @Setter
     private Integer roomNumber;
 
