@@ -18,13 +18,13 @@ public class Customer extends Person {
     @Column
     @NotBlank
     @Getter @Setter
-    @Pattern(regexp = "[\\u4E00-\\u9FA5a-zA-Z]{1,15}+")//Chinese
+    @Pattern(regexp = "[\\u4E00-\\u9FA5a-zA-Z]{1,15}")//Chinese
     private String realName;
 
     @Column(unique = true)
     //@Size(min = 18, max = 18)
     @Getter @Setter
-    @Pattern(regexp = "[0-9]{18}+")
+    @Pattern(regexp = "[0-9]{18}")
     private String identityNumber;
 
     @Column
