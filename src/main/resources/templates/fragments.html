@@ -10,7 +10,7 @@
 <body>
     <div th:fragment="nav">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-            <span class="navbar-brand">旅馆客房管理系统</span>
+            <span class="navbar-brand">XX旅馆</span>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -18,6 +18,21 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/}">首页</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" th:text="联系我们"></a>
+                        <div class="dropdown-menu p-4 text-muted" style="max-width: 200px;">
+                            <p>
+                                竭诚为您服务
+                            </p>
+                            <div class="dropdown-divider"></div>
+                            <p class="mb-0">
+                                邮箱：XXXX@zju.edu.com
+                            </p>
+                            <p class="mb-0">
+                                电话：188XXXX2560
+                            </p>
+                        </div>
                     </li>
                 </ul>
                 <ul class="navbar-nav" th:if="${session.id} == null">
