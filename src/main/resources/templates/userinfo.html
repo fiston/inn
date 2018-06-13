@@ -38,7 +38,30 @@
                     <div class="card">
                         <div class="card-header text-white bg-primary">预约记录</div>
                         <div class="card-body">
-
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">预约时间</th>
+                                        <th scope="col">客房类型</th>
+                                        <th scope="col">入住日期</th>
+                                        <th scope="col">退房日期</th>
+                                        <th scope="col">状态</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="item : ${reservations}">
+                                        <th scope="row" th:text="${item.getId()}"></th>
+                                        <td th:text="${timeFormatter.format(item.getReservationTime())}"></td>
+                                        <td th:text="${item.getRoomType().getDescription()}"></td>
+                                        <td th:text="${dateFormatter.format(item.getStartDate())}"></td>
+                                        <td th:text="${dateFormatter.format(item.getEndDate())}"></td>
+                                        <td th:if="${item.getCheckinTime() == null}">未入住</td>
+                                        <td th:if="${item.getCheckinTime() != null && item.getCheckoutTime() == null}">已入住</td>
+                                        <td th:if="${item.getCheckoutTime() != null}">已完成</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

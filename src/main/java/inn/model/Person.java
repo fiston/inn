@@ -12,8 +12,7 @@ import javax.validation.constraints.Size;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person {
 
-    @Id
-    @GeneratedValue
+    @Id @GeneratedValue
     @Getter
     private Integer id;
 

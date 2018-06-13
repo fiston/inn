@@ -41,7 +41,7 @@ public class LoginController {
         session.setAttribute("username", user.get().getUsername());
         redirectAttributes.addFlashAttribute("message", "登录成功！");
         redirectAttributes.addFlashAttribute("alertClass", "success");
-        return "redirect:/";
+        return "redirect:/userinfo";
     }
 
     @DeleteMapping("/logout")
