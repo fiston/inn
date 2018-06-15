@@ -4,7 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class Reservation {
@@ -23,15 +24,15 @@ public class Reservation {
 
     @Column
     @Getter @Setter
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column
     @Getter @Setter
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column
     @Getter @Setter
-    private Date reservationTime;
+    private LocalDateTime reservationTime;
 
     @ManyToOne
     @Getter @Setter
@@ -43,7 +44,7 @@ public class Reservation {
 
     @Column
     @Getter @Setter
-    private Date checkinTime;
+    private LocalDateTime checkinTime;
 
     @ManyToOne
     @Getter @Setter
@@ -51,6 +52,6 @@ public class Reservation {
 
     @Column
     @Getter @Setter
-    private Date checkoutTime;
+    private LocalDateTime checkoutTime;
 
 }

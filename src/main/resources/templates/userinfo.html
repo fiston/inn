@@ -52,10 +52,10 @@
                                 <tbody>
                                     <tr th:each="item : ${reservations}">
                                         <th scope="row" th:text="${item.getId()}"></th>
-                                        <td th:text="${timeFormatter.format(item.getReservationTime())}"></td>
+                                        <td th:text="${item.getReservationTime()}"></td>
                                         <td th:text="${item.getRoomType().getDescription()}"></td>
-                                        <td th:text="${dateFormatter.format(item.getStartDate())}"></td>
-                                        <td th:text="${dateFormatter.format(item.getEndDate())}"></td>
+                                        <td th:text="${item.getStartDate()}"></td>
+                                        <td th:text="${item.getEndDate()}"></td>
                                         <td th:if="${item.getCheckinTime() == null}">未入住</td>
                                         <td th:if="${item.getCheckinTime() != null && item.getCheckoutTime() == null}">已入住</td>
                                         <td th:if="${item.getCheckoutTime() != null}">已完成</td>
