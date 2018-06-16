@@ -52,7 +52,7 @@
                                 <tbody>
                                     <tr th:each="item : ${reservations}" th:object="${item}">
                                         <th scope="row" th:text="*{id}"></th>
-                                        <td th:text="*{reservationTime}"></td>
+                                        <td th:text="${item.getReservationTime().format(formatter)}"></td>
                                         <td th:text="*{roomType.description}"></td>
                                         <td th:text="*{startDate}"></td>
                                         <td th:text="*{endDate}"></td>

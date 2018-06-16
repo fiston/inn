@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
+import java.time.format.DateTimeFormatter;
 
 @Controller
 public class UserInfoController {
@@ -25,6 +26,7 @@ public class UserInfoController {
         val user = (Customer) userService.findById((Integer) session.getAttribute("id")).get();
         model.addAttribute("user", user);
         model.addAttribute("reservations", user.getReservations());
+        model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return "userinfo";
     }
 

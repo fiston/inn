@@ -1,5 +1,6 @@
 package inn.service;
 
+import inn.model.Reservation;
 import inn.model.RoomType;
 import inn.repository.ReservationRepository;
 import inn.repository.RoomRepository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class ReservationService {
@@ -25,6 +27,14 @@ public class ReservationService {
         this.reservationRepository = reservationRepository;
         this.roomTypeRepository = roomTypeRepository;
         this.roomRepository = roomRepository;
+    }
+
+    public Optional<RoomType> findRoomTypeById(int id) {
+        return roomTypeRepository.findById(id);
+    }
+
+    public void saveReservation(Reservation reservation) {
+        reservationRepository.save(reservation);
     }
 
     private Map<RoomType, Integer> roomTypesAndNumbers(int capacity) {

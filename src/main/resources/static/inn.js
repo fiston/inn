@@ -5,5 +5,6 @@ $('.needs-validation').click(function (event) {
 });
 
 $('.datepicker').datepicker({
-    language: 'zh-CN'
+    language: 'zh-CN',
+    startDate: new Date().toISOString().split('T')[0]
 });

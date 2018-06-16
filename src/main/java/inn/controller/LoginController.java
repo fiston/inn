@@ -30,7 +30,7 @@ public class LoginController {
 
     @PostMapping("/login")
     public String createSession(Model model, RedirectAttributes redirectAttributes, HttpSession session,
-                                @RequestParam("username") String username, @RequestParam("password") String password) {
+                                @RequestParam String username, @RequestParam String password) {
         val user = userService.authenticate(username, password);
         if (!user.isPresent()) {
             model.addAttribute("message", "用户名或密码错误！");

@@ -1,26 +1,35 @@
 package inn.controller;
 
+import inn.model.Customer;
+import inn.model.Reservation;
 import inn.service.ReservationService;
+import inn.service.UserService;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
 @Controller
 public class ReservationController {
 
     private String[] capacities = {"不限", "1", "2", "3"};
+
+    private UserService userService;
     private ReservationService reservationService;
 
     @Autowired
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(UserService userService, ReservationService reservationService) {
+        this.userService = userService;
         this.reservationService = reservationService;
     }
 
@@ -31,16 +40,11 @@ public class ReservationController {
     }
 
     @PostMapping("/reserve")
-    public String showAvailableRooms(Model model, RedirectAttributes redirectAttributes,
-                                     @RequestParam("startDate") String startDate,
-                                     @RequestParam("endDate") String endDate,
-                                     @RequestParam("capacity") String capacity) {
-        LocalDate start, end;
-        try {
-            start = LocalDate.parse(startDate);
-            end = LocalDate.parse(endDate);
-        } catch (DateTimeParseException e) {
-            redirectAttributes.addFlashAttribute("message", "日期格式不正确！");
+    public String showAvailableRooms(Model model, RedirectAttributes redirectAttributes, @RequestParam String capacity,
+                                     @RequestParam String startDate, @RequestParam String endDate) {
+        val parseResult = parseStartAndEndDate(startDate, endDate);
+        if (parseResult.errorMessage != null) {
+            redirectAttributes.addFlashAttribute("message", parseResult.errorMessage);
             redirectAttributes.addFlashAttribute("alertClass", "danger");
             return "redirect:/reserve";
         }
@@ -50,13 +54,69 @@ public class ReservationController {
         } catch (NumberFormatException e) {
             cap = 0;
         }
-        val map = reservationService.vacantRoomNumbers(start, end, cap);
+        val map = reservationService.vacantRoomNumbers(parseResult.startDate, parseResult.endDate, cap);
         model.addAttribute("entries", map.entrySet());
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("capacity", capacity);
         model.addAttribute("capacities", capacities);
         return "reservation";
+    }
+
+    @PostMapping("/reserve/{roomTypeId}")
+    public String reverseRoom(RedirectAttributes redirectAttributes, HttpSession session, @PathVariable int roomTypeId,
+                              @RequestParam String startDate, @RequestParam String endDate) {
+        val userId = session.getAttribute("id");
+        if (userId == null) {
+            redirectAttributes.addFlashAttribute("message", "预订客房请先登录！");
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/login";
+        }
+        val parseResult = parseStartAndEndDate(startDate, endDate);
+        if (parseResult.errorMessage != null) {
+            redirectAttributes.addFlashAttribute("message", parseResult.errorMessage);
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/reserve";
+        }
+        val reservation = new Reservation();
+        reservation.setCustomer((Customer) userService.findById((Integer) userId).get());
+        reservation.setRoomType(reservationService.findRoomTypeById(roomTypeId).get());
+        reservation.setStartDate(parseResult.startDate);
+        reservation.setEndDate(parseResult.endDate);
+        reservation.setReservationTime(LocalDateTime.now());
+        reservationService.saveReservation(reservation);
+        redirectAttributes.addFlashAttribute("message", "预订成功！");
+        redirectAttributes.addFlashAttribute("alertClass", "success");
+        return "redirect:/userinfo";
+    }
+
+    private class ParseResult {
+        private final LocalDate startDate;
+        private final LocalDate endDate;
+        private final String errorMessage;
+
+        private ParseResult(LocalDate startDate, LocalDate endDate, String errorMessage) {
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.errorMessage = errorMessage;
+        }
+    }
+
+    private ParseResult parseStartAndEndDate(String startDate, String endDate) {
+        LocalDate start, end;
+        try {
+            start = LocalDate.parse(startDate);
+            end = LocalDate.parse(endDate);
+        } catch (DateTimeParseException e) {
+            return new ParseResult(null, null, "日期格式不正确！");
+        }
+        if (!start.isBefore(end)) {
+            return new ParseResult(null, null, "入住日期必须早于退房日期！");
+        }
+        if (start.isBefore(LocalDate.now())) {
+            return new ParseResult(null, null, "入住日期不能早于今日！");
+        }
+        return new ParseResult(start, end, null);
     }
 
 }
