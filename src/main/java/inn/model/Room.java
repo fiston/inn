@@ -16,7 +16,7 @@ public class Room {
     @Getter @Setter
     private Integer roomNumber;
 
-    @ManyToOne
+    @ManyToOne @JoinColumn
     @Getter @Setter
     private RoomType roomType;
 

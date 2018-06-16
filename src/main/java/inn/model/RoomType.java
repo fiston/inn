@@ -30,7 +30,7 @@ public class RoomType {
     @Getter @Setter
     private URL imageUrl;
 
-    @OneToMany
+    @OneToMany(mappedBy = "roomType")
     @Getter
     private List<Room> rooms;
 

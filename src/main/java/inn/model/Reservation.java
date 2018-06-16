@@ -14,11 +14,11 @@ public class Reservation {
     @Getter
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne @JoinColumn
     @Getter @Setter
     private Customer customer;
 
-    @ManyToOne
+    @ManyToOne @JoinColumn
     @Getter @Setter
     private RoomType roomType;
 
@@ -34,11 +34,11 @@ public class Reservation {
     @Getter @Setter
     private LocalDateTime reservationTime;
 
-    @ManyToOne
+    @ManyToOne @JoinColumn
     @Getter @Setter
     private Room allocatedRoom;
 
-    @ManyToOne
+    @ManyToOne @JoinColumn
     @Getter @Setter
     private Staff checkinStaff;
 
@@ -46,7 +46,7 @@ public class Reservation {
     @Getter @Setter
     private LocalDateTime checkinTime;
 
-    @ManyToOne
+    @ManyToOne @JoinColumn
     @Getter @Setter
     private Staff checkoutStaff;
 

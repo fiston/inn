@@ -39,7 +39,7 @@ public class Customer extends Person {
     @Getter @Setter
     private String emailAddress;
 
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     @Getter
     private List<Reservation> reservations;
 
