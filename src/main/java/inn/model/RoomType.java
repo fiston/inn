@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.net.URL;
 import java.util.List;
 
 @Entity
@@ -19,11 +20,15 @@ public class RoomType {
 
     @Column
     @Getter @Setter
-    private Integer bedCount;
+    private Integer capacity;
 
     @Column
     @Getter @Setter
     private Float price;
+
+    @Column
+    @Getter @Setter
+    private URL imageUrl;
 
     @OneToMany
     @Getter
