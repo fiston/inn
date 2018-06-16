@@ -29,6 +29,16 @@
     margin: 16px auto;
 }
 
+.room-query-buttons {
+    margin-bottom: 64px;
+}
+
+.room-entry {
+    width: 50%;
+    float: left;
+    margin: 0;
+}
+
 .footer {
     border-top: 1px lightgray solid;
     padding: 8px 16px;

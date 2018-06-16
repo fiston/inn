@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+    <div th:replace="fragments :: nav"></div>
+    <div class="container">
+        <div class="card">
+            <div class="card-header text-white bg-primary">客房预订</div>
+            <div class="card-body">
+                <form th:action="@{/reserve}" method="post">
+                    <div class="form-row">
+                        <div class="form-group col-sm-5">
+                            <label for="startDate">入住日期</label>
+                            <input class="form-control datepicker" id="startDate" name="startDate" th:value="${startDate}">
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label for="endDate">退房日期</label>
+                            <input class="form-control datepicker" id="endDate" name="endDate" th:value="${endDate}">
+                        </div>
+                        <div class="form-group col-sm-2">
+                            <label for="capacity">人数</label>
+                            <select class="form-control" id="capacity" name="capacity">
+                                <option th:each="cap : ${capacities}" th:text="${cap}" th:selected="${cap} == ${capacity}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row room-query-buttons">
+                        <button class="btn btn-primary offset-sm-10 col-sm-2" type="submit">查询</button>
+                    </div>
+                    <div class="card room-entry" th:each="entry : ${entries}" th:object="${entry}">
+                        <img class="card-img-top" th:src="*{key.imageUrl}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="*{key.description}"></h5>
+                            <div th:text="|可入住人数：*{key.capacity}|"></div>
+                            <div th:text="|价格：￥*{key.price}|"></div>
+                            <div th:text="|空房数量：*{value}／${entry.getKey().getRooms().size()}|"></div>
+                            <button class="btn btn-info float-right" th:formaction="@{/reserve/{id}(id=*{key.id})}" th:disabled="*{value} <= 0">预订</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div th:replace="fragments :: footer"></div>
+</body>
+</html>
