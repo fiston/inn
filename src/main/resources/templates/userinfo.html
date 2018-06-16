@@ -7,31 +7,31 @@
     <div class="card bg-light">
         <div class="card-body">
             <div class="row">
-                <div class="col-lg-3">
-                    <img th:src="|https://www.gravatar.com/avatar/${user.getId()}?d=identicon&s=200|" class="avatar">
+                <div class="col-lg-3" th:object="${user}">
+                    <img th:src="|https://www.gravatar.com/avatar/*{id}?d=identicon&s=200|" class="avatar">
                     <div class="user-info-row">
                         <span class="badge badge-primary">用　　户</span>
-                        <span th:text="${user.getUsername()}"></span>
+                        <span th:text="*{username}"></span>
                     </div>
                     <div class="user-info-row">
                         <span class="badge badge-primary">真实姓名</span>
-                        <span th:text="${user.getRealName()}"></span>
+                        <span th:text="*{realName}"></span>
                     </div>
                     <div class="user-info-row">
                         <span class="badge badge-primary">身份证号</span>
-                        <span th:text="${user.getIdentityNumber()}"></span>
+                        <span th:text="*{identityNumber}"></span>
                     </div>
                     <div class="user-info-row">
                         <span class="badge badge-primary">性　　别</span>
-                        <span th:text="${user.getGender()}"></span>
+                        <span th:text="*{gender}"></span>
                     </div>
                     <div class="user-info-row" th:if="${!user.getPhoneNumber().isEmpty()}">
                         <span class="badge badge-primary">手机号码</span>
-                        <span th:text="${user.getPhoneNumber()}"></span>
+                        <span th:text="*{phoneNumber}"></span>
                     </div>
                     <div class="user-info-row" th:if="${!user.getEmailAddress().isEmpty()}">
                         <span class="badge badge-primary">电子邮箱</span>
-                        <span th:text="${user.getEmailAddress()}"></span>
+                        <span th:text="*{emailAddress}"></span>
                     </div>
                 </div>
                 <div class="col-lg-9">
@@ -50,15 +50,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="item : ${reservations}">
-                                        <th scope="row" th:text="${item.getId()}"></th>
-                                        <td th:text="${item.getReservationTime()}"></td>
-                                        <td th:text="${item.getRoomType().getDescription()}"></td>
-                                        <td th:text="${item.getStartDate()}"></td>
-                                        <td th:text="${item.getEndDate()}"></td>
-                                        <td th:if="${item.getCheckinTime() == null}">未入住</td>
-                                        <td th:if="${item.getCheckinTime() != null && item.getCheckoutTime() == null}">已入住</td>
-                                        <td th:if="${item.getCheckoutTime() != null}">已完成</td>
+                                    <tr th:each="item : ${reservations}" th:object="${item}">
+                                        <th scope="row" th:text="*{id}"></th>
+                                        <td th:text="*{reservationTime}"></td>
+                                        <td th:text="*{roomType.description}"></td>
+                                        <td th:text="*{startDate}"></td>
+                                        <td th:text="*{endDate}"></td>
+                                        <td th:if="*{checkinTime} == null">未入住</td>
+                                        <td th:if="*{checkinTime} != null and *{checkoutTime} == null">已入住</td>
+                                        <td th:if="*{checkoutTime} != null">已完成</td>
                                     </tr>
                                 </tbody>
                             </table>
