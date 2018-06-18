@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,6 +34,10 @@ public class ReservationService {
         return roomTypeRepository.findById(id);
     }
 
+    public List<Reservation> findAllReservations() {
+        return reservationRepository.findAll();
+    }
+
     public void saveReservation(Reservation reservation) {
         reservationRepository.save(reservation);
     }
@@ -48,12 +53,10 @@ public class ReservationService {
 
     private Map<RoomType, Integer> vacantRoomNumbers(LocalDate date, int capacity) {
         val map = roomTypesAndNumbers(capacity);
-        val reservations = reservationRepository.findAll();
+        val reservations = reservationRepository.findByOverlappedDate(date);
         for (val reservation : reservations) {
-            if (!reservation.getStartDate().isAfter(date) && reservation.getEndDate().isAfter(date)) {
-                val roomType = reservation.getRoomType();
-                map.put(roomType, map.get(roomType) - 1);
-            }
+            val roomType = reservation.getRoomType();
+            map.put(roomType, map.get(roomType) - 1);
         }
         return map;
     }
@@ -67,6 +70,18 @@ public class ReservationService {
             }
         }
         return map;
+    }
+
+    public List<Reservation> checkinReservations(LocalDate date) {
+        val reservations = reservationRepository.findByStartDateLessThanEqual(date);
+        reservations.removeIf(r -> r.getCheckinTime() != null);
+        return reservations;
+    }
+
+    public List<Reservation> checkoutReservations(LocalDate date) {
+        val reservations = reservationRepository.findByEndDateLessThanEqual(date);
+        reservations.removeIf(r -> r.getCheckinTime() == null || r.getCheckoutTime() != null);
+        return reservations;
     }
 
 }

@@ -1,5 +1,6 @@
 package inn.controller;
 
+import inn.model.Customer;
 import inn.service.UserService;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,11 @@ public class LoginController {
         session.setAttribute("username", user.get().getUsername());
         redirectAttributes.addFlashAttribute("message", "登录成功！");
         redirectAttributes.addFlashAttribute("alertClass", "success");
-        return "redirect:/userinfo";
+        if (user.get() instanceof Customer) {
+            return "redirect:/userinfo";
+        } else {
+            return "redirect:/management";
+        }
     }
 
     @DeleteMapping("/logout")

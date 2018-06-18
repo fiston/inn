@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments :: head"></head>
+<body>
+<div th:replace="fragments :: nav"></div>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/management}">预订管理</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/checkin}">入住登记</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/checkout}">退房结账</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">用户</th>
+                    <th scope="col">客房类型</th>
+                    <th scope="col">房间号</th>
+                    <th scope="col">入住日期</th>
+                    <th scope="col">退房日期</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="item : ${reservations}" th:object="${item}">
+                    <th scope="row" th:text="*{id}"></th>
+                    <td th:text="*{customer.username}"></td>
+                    <td th:text="*{roomType.description}"></td>
+                    <td th:text="*{allocatedRoom.roomNumber}"></td>
+                    <td th:text="*{startDate}"></td>
+                    <td th:text="*{endDate}"></td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#modal'+*{id}">结账</button>
+                        <div class="modal fade" th:id="|modal*{id}|" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel">退房结账</h5>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>付款金额：*</p>
+                                    </div>
+                                    <form class="modal-footer" th:action="@{/reservations/{id}(id=*{id})}" method="post">
+                                        <input type="hidden" name="staffId" th:value="${staffId}">
+                                        <input type="hidden" name="step" value="checkout">
+                                        <button type="submit" class="btn btn-primary">确认</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div th:replace="fragments :: footer"></div>
+</body>
+</html>
