@@ -1,6 +1,7 @@
 package inn.controller;
 
 import inn.model.Customer;
+import inn.model.Staff;
 import inn.service.UserService;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,20 +33,23 @@ public class LoginController {
     @PostMapping("/login")
     public String createSession(Model model, RedirectAttributes redirectAttributes, HttpSession session,
                                 @RequestParam String username, @RequestParam String password) {
-        val user = userService.authenticate(username, password);
-        if (!user.isPresent()) {
+        val optionalUser = userService.authenticate(username, password);
+        if (!optionalUser.isPresent()) {
             model.addAttribute("message", "用户名或密码错误！");
             model.addAttribute("alertClass", "danger");
             return "login";
         }
-        session.setAttribute("id", user.get().getId());
-        session.setAttribute("username", user.get().getUsername());
+        val user = optionalUser.get();
+        session.setAttribute("id", user.getId());
+        session.setAttribute("username", user.getUsername());
         redirectAttributes.addFlashAttribute("message", "登录成功！");
         redirectAttributes.addFlashAttribute("alertClass", "success");
-        if (user.get() instanceof Customer) {
-            return "redirect:/userinfo";
-        } else {
+        if (user instanceof Staff) {
+            session.setAttribute("role", ((Staff) user).getIsAdmin() ? "admin" : "staff");
             return "redirect:/management";
+        } else {
+            session.setAttribute("role", "customer");
+            return "redirect:/userinfo";
         }
     }
 

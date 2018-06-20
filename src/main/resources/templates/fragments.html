@@ -36,7 +36,8 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" th:text="|${session.username}|"></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" th:href="@{/userinfo}">个人信息</a>
+                            <a class="dropdown-item" th:href="@{/userinfo}" th:if="${session.role} == 'customer'">个人信息</a>
+                            <a class="dropdown-item" th:href="@{/management}" th:if="${session.role} != 'customer'">管理页面</a>
                             <a class="dropdown-item" th:href="@{/logout}" data-method="delete">登出</a>
                         </div>
                     </li>

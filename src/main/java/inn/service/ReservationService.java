@@ -56,7 +56,7 @@ public class ReservationService {
         val reservations = reservationRepository.findByOverlappedDate(date);
         for (val reservation : reservations) {
             val roomType = reservation.getRoomType();
-            map.put(roomType, map.get(roomType) - 1);
+            if (map.containsKey(roomType)) map.put(roomType, map.get(roomType) - 1);
         }
         return map;
     }
