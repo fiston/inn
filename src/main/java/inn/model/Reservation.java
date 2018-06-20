@@ -32,6 +32,10 @@ public class Reservation {
 
     @Column
     @Getter @Setter
+    private Float charge;
+
+    @Column
+    @Getter @Setter
     private LocalDateTime reservationTime;
 
     @ManyToOne @JoinColumn

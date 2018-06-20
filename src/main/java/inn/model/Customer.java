@@ -39,6 +39,10 @@ public class Customer extends Person {
     @Getter @Setter
     private String emailAddress;
 
+    @Column
+    @Getter @Setter
+    private Boolean isVip;
+
     @OneToMany(mappedBy = "customer")
     @Getter
     private List<Reservation> reservations;

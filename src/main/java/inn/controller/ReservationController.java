@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 @Controller
 public class ReservationController {
@@ -79,10 +80,17 @@ public class ReservationController {
             return "redirect:/reserve";
         }
         val reservation = new Reservation();
-        reservation.setCustomer((Customer) userService.findById((Integer) userId).get());
-        reservation.setRoomType(reservationService.findRoomTypeById(roomTypeId).get());
-        reservation.setStartDate(parseResult.startDate);
-        reservation.setEndDate(parseResult.endDate);
+        val customer = (Customer) userService.findById((Integer) userId).get();
+        val roomType = reservationService.findRoomTypeById(roomTypeId).get();
+        val start = parseResult.startDate;
+        val end = parseResult.endDate;
+        float charge = roomType.getPrice() * ChronoUnit.DAYS.between(start, end);
+        if (customer.getIsVip()) charge *= 0.9;
+        reservation.setCustomer(customer);
+        reservation.setRoomType(roomType);
+        reservation.setStartDate(start);
+        reservation.setEndDate(end);
+        reservation.setCharge(charge);
         reservation.setReservationTime(LocalDateTime.now());
         reservationService.saveReservation(reservation);
         redirectAttributes.addFlashAttribute("message", "预订成功！");

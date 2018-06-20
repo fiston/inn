@@ -55,6 +55,7 @@ public class RegisterController {
             model.addAttribute("alertClass", "danger");
             return "register";
         }
+        user.setIsVip(false);
         userService.save(user);
         redirectAttributes.addFlashAttribute("message", "注册成功！");
         redirectAttributes.addFlashAttribute("alertClass", "success");

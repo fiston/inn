@@ -43,6 +43,11 @@
     margin: 0;
 }
 
+.checkout-charge {
+    font-size: 3em;
+    font-weight: bold;
+}
+
 .footer {
     border-top: 1px lightgray solid;
     padding: 8px 16px;
