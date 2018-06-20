@@ -56,7 +56,7 @@ public class ReservationController {
             cap = 0;
         }
         val map = reservationService.vacantRoomNumbers(parseResult.startDate, parseResult.endDate, cap);
-        model.addAttribute("entries", map.entrySet());
+        model.addAttribute("entries", map);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);
         model.addAttribute("capacity", capacity);

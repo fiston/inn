@@ -22,8 +22,7 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">用户</th>
+                        <th scope="col">客户</th>
                         <th scope="col">客房类型</th>
                         <th scope="col">入住日期</th>
                         <th scope="col">退房日期</th>
@@ -32,8 +31,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="item : ${reservations}" th:object="${item}">
-                        <th scope="row" th:text="*{id}"></th>
-                        <td th:text="*{customer.username}"></td>
+                        <td th:text="*{customer.realName}"></td>
                         <td th:text="*{roomType.description}"></td>
                         <td th:text="*{startDate}"></td>
                         <td th:text="*{endDate}"></td>

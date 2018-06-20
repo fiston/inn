@@ -22,32 +22,30 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">用户</th>
+                    <th scope="col">客户</th>
                     <th scope="col">客房类型</th>
                     <th scope="col">房间号</th>
                     <th scope="col">入住日期</th>
                     <th scope="col">退房日期</th>
-                    <th scope="col">在线预订时间</th>
                     <th scope="col">入住登记时间</th>
                     <th scope="col">退房结账时间</th>
+                    <th scope="col">总价</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="item : ${reservations}" th:object="${item}">
-                    <th scope="row" th:text="*{id}"></th>
-                    <td th:text="*{customer.username}"></td>
+                    <td th:text="*{customer.realName}"></td>
                     <td th:text="*{roomType.description}"></td>
                     <td th:if="*{allocatedRoom} != null" th:text="*{allocatedRoom.roomNumber}"></td>
                     <td th:if="*{allocatedRoom} == null">未分配</td>
                     <td th:text="*{startDate}"></td>
                     <td th:text="*{endDate}"></td>
-                    <td th:text="${item.getReservationTime().format(formatter)}"></td>
                     <td th:if="*{checkinTime} != null" th:text="${item.getCheckinTime().format(formatter)}"></td>
                     <td th:if="*{checkinTime} == null">未入住</td>
                     <td th:if="*{checkoutTime} != null" th:text="${item.getCheckoutTime().format(formatter)}"></td>
                     <td th:if="*{checkoutTime} == null">未退房</td>
+                    <td th:text="|￥*{charge}|"></td>
                     <td><a th:href="@{/reservations/{id}(id=*{id})}" data-method="delete" data-confirm="确定要删除预订吗？" class="btn btn-danger">删除</a></td>
                 </tr>
                 </tbody>

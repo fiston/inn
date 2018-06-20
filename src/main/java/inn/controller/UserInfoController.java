@@ -1,6 +1,7 @@
 package inn.controller;
 
 import inn.model.Customer;
+import inn.model.Reservation;
 import inn.service.UserService;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.servlet.http.HttpSession;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 
 @Controller
 public class UserInfoController {
@@ -25,7 +27,9 @@ public class UserInfoController {
     public String showUserInfo(Model model, HttpSession session) {
         val user = (Customer) userService.findById((Integer) session.getAttribute("id")).get();
         model.addAttribute("user", user);
-        model.addAttribute("reservations", user.getReservations());
+        val reservations = user.getReservations();
+        reservations.sort(Comparator.comparing(Reservation::getId));
+        model.addAttribute("reservations", reservations);
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         return "userinfo";
     }
