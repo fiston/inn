@@ -7,10 +7,12 @@ import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Controller
@@ -34,21 +36,50 @@ public class ManagementController {
     }
 
     @GetMapping("/checkin")
-    public String showCheckin(Model model, HttpSession session) {
-        val staff = (Staff) userService.findById((Integer) session.getAttribute("id")).get();
+    public String showCheckin(Model model) {
         val reservations = reservationService.checkinReservations(LocalDate.now());
         model.addAttribute("reservations", reservations);
-        model.addAttribute("staffId", staff.getId());
         return "checkin";
     }
 
     @GetMapping("/checkout")
-    public String showCheckout(Model model, HttpSession session) {
-        val staff = (Staff) userService.findById((Integer) session.getAttribute("id")).get();
+    public String showCheckout(Model model) {
         val reservations = reservationService.checkoutReservations(LocalDate.now());
         model.addAttribute("reservations", reservations);
-        model.addAttribute("staffId", staff.getId());
         return "checkout";
+    }
+
+    @PostMapping("/reservations/{id}")
+    public String updateReservation(RedirectAttributes redirectAttributes, HttpSession session, @PathVariable int id,
+                                    @RequestParam String step, @RequestParam int allocatedRoom) {
+        val reservation = reservationService.findReservationById(id).get();
+        val staff = (Staff) userService.findById((Integer) session.getAttribute("id")).get();
+        if (step.equals("checkin")) {
+            val room = reservationService.findRoomByNumber(allocatedRoom).get();
+            reservation.setAllocatedRoom(room);
+            reservation.setCheckinStaff(staff);
+            reservation.setCheckinTime(LocalDateTime.now());
+            reservationService.saveReservation(reservation);
+            redirectAttributes.addFlashAttribute("message", "入住登记成功！");
+            redirectAttributes.addFlashAttribute("alertClass", "success");
+            return "redirect:/checkin";
+        } else if (step.equals("checkout")) {
+            reservation.setCheckoutStaff(staff);
+            reservation.setCheckoutTime(LocalDateTime.now());
+            reservationService.saveReservation(reservation);
+            redirectAttributes.addFlashAttribute("message", "退房结账成功！");
+            redirectAttributes.addFlashAttribute("alertClass", "success");
+            return "redirect:/checkout";
+        }
+        return "redirect:/management";
+    }
+
+    @DeleteMapping("/reservations/{id}")
+    public String deleteReservation(RedirectAttributes redirectAttributes, @PathVariable int id) {
+        reservationService.deleteReservationById(id);
+        redirectAttributes.addFlashAttribute("message", "预订记录删除成功！");
+        redirectAttributes.addFlashAttribute("alertClass", "success");
+        return "redirect:/management";
     }
 
 }

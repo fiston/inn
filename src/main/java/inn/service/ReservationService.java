@@ -1,6 +1,7 @@
 package inn.service;
 
 import inn.model.Reservation;
+import inn.model.Room;
 import inn.model.RoomType;
 import inn.repository.ReservationRepository;
 import inn.repository.RoomRepository;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ReservationService {
@@ -30,8 +28,16 @@ public class ReservationService {
         this.roomRepository = roomRepository;
     }
 
+    public Optional<Room> findRoomByNumber(int roomNumber) {
+        return roomRepository.findByRoomNumber(roomNumber);
+    }
+
     public Optional<RoomType> findRoomTypeById(int id) {
         return roomTypeRepository.findById(id);
+    }
+
+    public Optional<Reservation> findReservationById(int id) {
+        return reservationRepository.findById(id);
     }
 
     public List<Reservation> findAllReservations() {
@@ -40,6 +46,10 @@ public class ReservationService {
 
     public void saveReservation(Reservation reservation) {
         reservationRepository.save(reservation);
+    }
+
+    public void deleteReservationById(int id) {
+        reservationRepository.deleteById(id);
     }
 
     private Map<RoomType, Integer> roomTypesAndNumbers(int capacity) {
@@ -51,7 +61,7 @@ public class ReservationService {
         return map;
     }
 
-    private Map<RoomType, Integer> vacantRoomNumbers(LocalDate date, int capacity) {
+    private Map<RoomType, Integer> vacantRoomTypesAndNumbers(LocalDate date, int capacity) {
         val map = roomTypesAndNumbers(capacity);
         val reservations = reservationRepository.findByOverlappedDate(date);
         for (val reservation : reservations) {
@@ -61,15 +71,26 @@ public class ReservationService {
         return map;
     }
 
-    public Map<RoomType, Integer> vacantRoomNumbers(LocalDate startDate, LocalDate endDate, int capacity) {
+    public Map<RoomType, Integer> vacantRoomTypesAndNumbers(LocalDate startDate, LocalDate endDate, int capacity) {
         val map = roomTypesAndNumbers(capacity);
         for (LocalDate date = startDate; date.isBefore(endDate); date = date.plusDays(1)) {
-            val numbers = vacantRoomNumbers(date, capacity);
+            val numbers = vacantRoomTypesAndNumbers(date, capacity);
             for (val entry : numbers.entrySet()) {
                 map.put(entry.getKey(), Math.min(map.get(entry.getKey()), entry.getValue()));
             }
         }
         return map;
+    }
+
+    public List<Room> vacantRooms(LocalDate date, RoomType roomType) {
+        val rooms = roomType.getRooms();
+        val reservations = reservationRepository.findByOverlappedDate(date);
+        for (val reservation : reservations) {
+            if (reservation.getAllocatedRoom() != null) {
+                rooms.remove(reservation.getAllocatedRoom());
+            }
+        }
+        return rooms;
     }
 
     public List<Reservation> checkinReservations(LocalDate date) {

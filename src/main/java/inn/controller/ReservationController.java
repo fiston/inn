@@ -55,7 +55,7 @@ public class ReservationController {
         } catch (NumberFormatException e) {
             cap = 0;
         }
-        val map = reservationService.vacantRoomNumbers(parseResult.startDate, parseResult.endDate, cap);
+        val map = reservationService.vacantRoomTypesAndNumbers(parseResult.startDate, parseResult.endDate, cap);
         model.addAttribute("entries", map);
         model.addAttribute("startDate", startDate);
         model.addAttribute("endDate", endDate);

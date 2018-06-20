@@ -50,7 +50,7 @@
                                         <p>应付款金额：<span class="checkout-charge" th:text="|￥*{charge}|"></span></p>
                                     </div>
                                     <form class="modal-footer" th:action="@{/reservations/{id}(id=*{id})}" method="post">
-                                        <input type="hidden" name="staffId" th:value="${staffId}">
+                                        <input type="hidden" name="allocatedRoom" value="0">
                                         <input type="hidden" name="step" value="checkout">
                                         <button type="submit" class="btn btn-primary">确认</button>
                                     </form>
