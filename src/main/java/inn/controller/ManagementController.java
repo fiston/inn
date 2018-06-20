@@ -82,4 +82,17 @@ public class ManagementController {
         return "redirect:/management";
     }
 
+    @GetMapping("/vacant/{reservationId}") @ResponseBody
+    public String getVacantRooms(@PathVariable int reservationId) {
+        val reservation = reservationService.findReservationById(reservationId).get();
+        val rooms = reservationService.vacantRooms(reservation.getStartDate(), reservation.getRoomType());
+        val response = new StringBuilder();
+        for (val room : rooms) {
+            response.append("<option>");
+            response.append(room.getRoomNumber());
+            response.append("</option>\n");
+        }
+        return response.toString();
+    }
+
 }
