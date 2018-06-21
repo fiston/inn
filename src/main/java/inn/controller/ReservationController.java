@@ -73,6 +73,12 @@ public class ReservationController {
             redirectAttributes.addFlashAttribute("alertClass", "danger");
             return "redirect:/login";
         }
+        val user = userService.findById((Integer) userId).get();
+        if (!(user instanceof Customer)) {
+            redirectAttributes.addFlashAttribute("message", "不可使用管理员账号预订客房！");
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/reserve";
+        }
         val parseResult = parseStartAndEndDate(startDate, endDate);
         if (parseResult.errorMessage != null) {
             redirectAttributes.addFlashAttribute("message", parseResult.errorMessage);
@@ -80,13 +86,12 @@ public class ReservationController {
             return "redirect:/reserve";
         }
         val reservation = new Reservation();
-        val customer = (Customer) userService.findById((Integer) userId).get();
         val roomType = reservationService.findRoomTypeById(roomTypeId).get();
         val start = parseResult.startDate;
         val end = parseResult.endDate;
         float charge = roomType.getPrice() * ChronoUnit.DAYS.between(start, end);
-        if (customer.getIsVip()) charge *= 0.9;
-        reservation.setCustomer(customer);
+        if (((Customer) user).getIsVip()) charge *= 0.9;
+        reservation.setCustomer((Customer) user);
         reservation.setRoomType(roomType);
         reservation.setStartDate(start);
         reservation.setEndDate(end);

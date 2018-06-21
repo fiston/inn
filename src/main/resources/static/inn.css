@@ -2,6 +2,10 @@
     margin-bottom: 16px;
 }
 
+.alert {
+    margin-bottom: 0;
+}
+
 .card {
     margin: 64px auto;
 }

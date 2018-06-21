@@ -28,7 +28,12 @@ public class ManagementController {
     }
 
     @GetMapping("/management")
-    public String showReservations(Model model) {
+    public String showReservations(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isStaff(session)) {
+            redirectAttributes.addFlashAttribute("message", "只有管理员账号可以访问此页面！");
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/";
+        }
         val reservations = reservationService.findAllReservations();
         model.addAttribute("reservations", reservations);
         model.addAttribute("formatter", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -36,14 +41,24 @@ public class ManagementController {
     }
 
     @GetMapping("/checkin")
-    public String showCheckin(Model model) {
+    public String showCheckin(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isStaff(session)) {
+            redirectAttributes.addFlashAttribute("message", "只有管理员账号可以访问此页面！");
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/";
+        }
         val reservations = reservationService.checkinReservations(LocalDate.now());
         model.addAttribute("reservations", reservations);
         return "checkin";
     }
 
     @GetMapping("/checkout")
-    public String showCheckout(Model model) {
+    public String showCheckout(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        if (!isStaff(session)) {
+            redirectAttributes.addFlashAttribute("message", "只有管理员账号可以访问此页面！");
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/";
+        }
         val reservations = reservationService.checkoutReservations(LocalDate.now());
         model.addAttribute("reservations", reservations);
         return "checkout";
@@ -52,6 +67,11 @@ public class ManagementController {
     @PostMapping("/reservations/{id}")
     public String updateReservation(RedirectAttributes redirectAttributes, HttpSession session, @PathVariable int id,
                                     @RequestParam String step, @RequestParam int allocatedRoom) {
+        if (!isStaff(session)) {
+            redirectAttributes.addFlashAttribute("message", "只有管理员账号可以进行此操作！");
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/";
+        }
         val reservation = reservationService.findReservationById(id).get();
         val staff = (Staff) userService.findById((Integer) session.getAttribute("id")).get();
         if (step.equals("checkin")) {
@@ -75,7 +95,12 @@ public class ManagementController {
     }
 
     @DeleteMapping("/reservations/{id}")
-    public String deleteReservation(RedirectAttributes redirectAttributes, @PathVariable int id) {
+    public String deleteReservation(RedirectAttributes redirectAttributes, HttpSession session, @PathVariable int id) {
+        if (!isStaff(session)) {
+            redirectAttributes.addFlashAttribute("message", "只有管理员账号可以进行此操作！");
+            redirectAttributes.addFlashAttribute("alertClass", "danger");
+            return "redirect:/";
+        }
         reservationService.deleteReservationById(id);
         redirectAttributes.addFlashAttribute("message", "预订记录删除成功！");
         redirectAttributes.addFlashAttribute("alertClass", "success");
@@ -93,6 +118,13 @@ public class ManagementController {
             response.append("</option>\n");
         }
         return response.toString();
+    }
+
+    private boolean isStaff(HttpSession session) {
+        val id = session.getAttribute("id");
+        if (id == null) return false;
+        val user = userService.findById((Integer) id).get();
+        return user instanceof Staff;
     }
 
 }
