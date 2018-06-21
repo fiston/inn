@@ -1,6 +1,5 @@
 package inn.controller;
 
-import inn.model.Customer;
 import inn.model.Staff;
 import inn.service.UserService;
 import lombok.val;

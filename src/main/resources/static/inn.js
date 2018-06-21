@@ -8,10 +8,3 @@ $('.datepicker').datepicker({
 $('.needs-validation').click(function (event) {
     event.target.closest('form').classList.add('was-validated');
 });
-
-$('button[data-toggle="modal"]').click(function (event) {
-    var modal = event.target.nextElementSibling;
-    $.ajax('vacant/' + modal.id.replace('modal', '')).done(function (data) {
-        $(modal).find('select#allocatedRoom').append(data);
-    });
-});

@@ -32,9 +32,9 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="*{key.description}"></h5>
                             <div th:text="|可入住人数：*{key.capacity}|"></div>
-                            <div th:text="|价格：￥*{key.price}|"></div>
+                            <div th:text="|单日价格：￥*{key.price}|"></div>
                             <div th:text="|空房数量：*{value}／${entry.getKey().getRooms().size()}|"></div>
-                            <button class="btn btn-info float-right" th:formaction="@{/reserve/{id}(id=*{key.id})}" th:disabled="*{value} <= 0">预订</button>
+                            <button class="btn btn-primary float-right" th:formaction="@{/reserve/{id}(id=*{key.id})}" th:disabled="*{value} <= 0">预订</button>
                         </div>
                     </div>
                 </form>

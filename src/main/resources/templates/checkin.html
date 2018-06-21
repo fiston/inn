@@ -72,5 +72,13 @@
         </div>
     </div>
     <div th:replace="fragments :: footer"></div>
+    <script>
+        $('button[data-toggle="modal"]').click(function (event) {
+            var modal = event.target.nextElementSibling;
+            $.ajax('vacant/' + modal.id.replace('modal', '')).done(function (data) {
+                $(modal).find('select#allocatedRoom').append(data);
+            });
+        });
+    </script>
 </body>
 </html>
