@@ -96,15 +96,16 @@ public class ManagementController {
 
     @DeleteMapping("/reservations/{id}")
     public String deleteReservation(RedirectAttributes redirectAttributes, HttpSession session, @PathVariable int id) {
-        if (!isStaff(session)) {
-            redirectAttributes.addFlashAttribute("message", "只有管理员账号可以进行此操作！");
+        val reservation = reservationService.findReservationById(id).get();
+        if (!isStaff(session) && !reservation.getCustomer().getId().equals(session.getAttribute("id"))) {
+            redirectAttributes.addFlashAttribute("message", "没有权限进行此操作！");
             redirectAttributes.addFlashAttribute("alertClass", "danger");
             return "redirect:/";
         }
         reservationService.deleteReservationById(id);
         redirectAttributes.addFlashAttribute("message", "预订记录删除成功！");
         redirectAttributes.addFlashAttribute("alertClass", "success");
-        return "redirect:/management";
+        return isStaff(session) ? "redirect:/management" : "redirect:/userinfo";
     }
 
     @GetMapping("/vacant/{reservationId}") @ResponseBody

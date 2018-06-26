@@ -46,6 +46,7 @@
                                         <th scope="col">入住日期</th>
                                         <th scope="col">退房日期</th>
                                         <th scope="col">状态</th>
+                                        <th scope="col"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -57,6 +58,7 @@
                                         <td th:if="*{checkinTime} == null">未入住</td>
                                         <td th:if="*{checkinTime} != null and *{checkoutTime} == null">已入住</td>
                                         <td th:if="*{checkoutTime} != null">已完成</td>
+                                        <td><a th:href="@{/reservations/{id}(id=*{id})}" data-method="delete" data-confirm="确定要删除预订吗？" class="btn btn-danger">删除</a></td>
                                     </tr>
                                 </tbody>
                             </table>
