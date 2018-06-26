@@ -31,7 +31,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="item : ${reservations}" th:object="${item}">
-                        <td th:text="*{customer.realName}"></td>
+                        <td><a th:text="*{customer.realName}" th:href="@{/userinfo/{id}(id=*{customer.id})}"></td>
                         <td th:text="*{roomType.description}"></td>
                         <td th:text="*{startDate}"></td>
                         <td th:text="*{endDate}"></td>
