@@ -52,6 +52,10 @@ public class ReservationService {
         reservationRepository.deleteById(id);
     }
 
+    public void saveRoomType(RoomType roomType) { roomTypeRepository.save(roomType); }
+
+    public void saveRoom(Room room) { roomRepository.save(room); }
+
     private Map<RoomType, Integer> roomTypesAndNumbers(int capacity) {
         val roomTypes = (capacity == 0) ? roomTypeRepository.findAll() : roomTypeRepository.findByCapacity(capacity);
         val map = new HashMap<RoomType, Integer>();
